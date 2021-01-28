@@ -1,11 +1,49 @@
+import os
+import tkinter as tk
+
 DEBUG = False
 FLAGS = _ = None
+
+
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.frame = self.create_frame(master)
+        self.frame.pack(expand=1, fill='both')
+
+    def create_frame(self, master):
+        master.grid_rowconfigure(0, weight=1)
+        master.grid_columnconfigure(0, weight=1)
+        frame = tk.Frame(master=master, relief=tk.RAISED, borderwidth=1)
+        button = tk.Button(master=frame, text='A', command=up)
+        button.grid(row=0, column=0, sticky=tk.NSEW)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_columnconfigure(0, weight=1)
+        button = tk.Button(master=frame, text='B', command=down)
+        button.grid(row=1, column=1, sticky=tk.NSEW)
+        frame.grid_rowconfigure(1, weight=1)
+        frame.grid_columnconfigure(1, weight=1)
+        
+        return frame
+
+
+def up():
+    print('up')
+
+
+def down():
+    print('down')
 
 
 def main():
     if DEBUG:
         print(f'Parsed arguments {FLAGS}')
         print(f'Unparsed arguments {_}')
+
+    root = tk.Tk()
+    app = Application(master=root)
+    app.mainloop()
 
 
 if __name__ == '__main__':
