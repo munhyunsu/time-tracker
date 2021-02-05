@@ -13,19 +13,31 @@ class Application(tk.Frame):
         self.frame = self.create_frame(master)
 
     def create_frame(self, master):
+        # master Layout
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(0, weight=1)
+        # master Frame
         frame = tk.Frame(master=master, relief=tk.RAISED, borderwidth=1)
-        button = tk.Button(master=frame, text='A', command=up)
-        button.grid(row=0, column=0, sticky=tk.NSEW)
+        # label: Category
+        label_category = tk.Label(master=frame, text='Category')
+        label_category.grid(row=0, column=0, sticky=tk.NSEW)
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
-        button = tk.Button(master=frame, text='B', command=down)
-        button.grid(row=1, column=1, sticky=tk.NSEW)
+        # label: Task
+        label_task = tk.Label(master=frame, text='Task')
+        label_task.grid(row=1, column=0, sticky=tk.NSEW)
         frame.grid_rowconfigure(1, weight=1)
-        frame.grid_columnconfigure(1, weight=1)
+        frame.grid_columnconfigure(0, weight=1)
+#         button = tk.Button(master=frame, text='A', command=up)
+#         button.grid(row=0, column=0, sticky=tk.NSEW)
+#         frame.grid_rowconfigure(0, weight=1)
+#         frame.grid_columnconfigure(0, weight=1)
+#         button = tk.Button(master=frame, text='B', command=down)
+#         button.grid(row=1, column=1, sticky=tk.NSEW)
+#         frame.grid_rowconfigure(1, weight=1)
+#         frame.grid_columnconfigure(1, weight=1)
         frame.pack(expand=1, fill='both')
-        
+
         return frame
 
 
