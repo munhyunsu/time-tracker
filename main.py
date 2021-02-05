@@ -9,8 +9,8 @@ class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
+        self.master.title('Time Tracker')
         self.frame = self.create_frame(master)
-        self.frame.pack(expand=1, fill='both')
 
     def create_frame(self, master):
         master.grid_rowconfigure(0, weight=1)
@@ -24,6 +24,7 @@ class Application(tk.Frame):
         button.grid(row=1, column=1, sticky=tk.NSEW)
         frame.grid_rowconfigure(1, weight=1)
         frame.grid_columnconfigure(1, weight=1)
+        frame.pack(expand=1, fill='both')
         
         return frame
 
@@ -42,6 +43,7 @@ def main():
         print(f'Unparsed arguments {_}')
 
     root = tk.Tk()
+    root.geometry('256x256')
     app = Application(master=root)
     app.mainloop()
 
