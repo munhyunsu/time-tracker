@@ -28,6 +28,13 @@ class Application(tk.Frame):
         label_task.grid(row=1, column=0, sticky=tk.NSEW)
         frame.grid_rowconfigure(1, weight=1)
         frame.grid_columnconfigure(0, weight=1)
+        # textbox: Category
+        text_category = tk.Entry(master=frame)
+        text_category.grid(row=0, column=1, columnspan=3, sticky=tk.NSEW)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_columnconfigure(1, weight=1)
+        frame.grid_columnconfigure(2, weight=1)
+        frame.grid_columnconfigure(3, weight=1)
 #         button = tk.Button(master=frame, text='A', command=up)
 #         button.grid(row=0, column=0, sticky=tk.NSEW)
 #         frame.grid_rowconfigure(0, weight=1)
