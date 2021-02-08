@@ -34,12 +34,15 @@ class Application(tk.Frame):
         # label: Category
         label_category = tk.Label(master=frame, text='Category')
         label_category.grid(row=1, column=0, sticky=tk.NSEW)
+        # textbox: Category
+        text_category = tk.Entry(master=frame)
+        text_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
         # label: Task
         label_task = tk.Label(master=frame, text='Task')
         label_task.grid(row=2, column=0, sticky=tk.NSEW)
         # textbox: Category
-        text_category = tk.Entry(master=frame)
-        text_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
+        text_task = tk.Entry(master=frame)
+        text_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
 
         return frame
 
