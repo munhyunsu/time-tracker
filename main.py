@@ -6,40 +6,40 @@ FLAGS = _ = None
 
 
 class Application(tk.Frame):
+    ROWS = 3
+    COLUMNS = 4
+    
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
         self.master.title('Time Tracker')
+        self.master.grid_rowconfigure(0, weight=1)
+        self.master.grid_columnconfigure(0, weight=1)
         self.frame = self.create_frame(master)
+        self.frame.pack(expand=1, fill='both')
 
     def create_frame(self, master):
-        # master Layout
-        master.grid_rowconfigure(0, weight=1)
-        master.grid_columnconfigure(0, weight=1)
         # master Frame
         frame = tk.Frame(master=master, relief=tk.RAISED, borderwidth=1)
-        # label: start time
+        for i in range(self.ROWS):
+            frame.grid_rowconfigure(i, weight=1)
+        for i in range(self.COLUMNS):
+            frame.grid_columnconfigure(i, weight=1)
+        # label: Start time
         label_stime = tk.Label(master=frame, text='Start time')
         label_stime.grid(row=0, column=0, sticky=tk.NSEW)
-        frame.grid_rowconfigure(0, weight=1)
-        frame.grid_columnconfigure(0, weight=1)
+        # label: Start time value
+        value_stime = tk.Label(master=frame, text='2020-01-01 00:00:00+0900')
+        value_stime.grid(row=0, column=1, columnspan=3, sticky=tk.NSEW)
         # label: Category
         label_category = tk.Label(master=frame, text='Category')
         label_category.grid(row=1, column=0, sticky=tk.NSEW)
-        frame.grid_rowconfigure(1, weight=1)
-        frame.grid_columnconfigure(0, weight=1)
         # label: Task
         label_task = tk.Label(master=frame, text='Task')
         label_task.grid(row=2, column=0, sticky=tk.NSEW)
-        frame.grid_rowconfigure(2, weight=1)
-        frame.grid_columnconfigure(0, weight=1)
         # textbox: Category
         text_category = tk.Entry(master=frame)
         text_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
-        frame.grid_columnconfigure(1, weight=1)
-        frame.grid_columnconfigure(2, weight=1)
-        frame.grid_columnconfigure(3, weight=1)
-        frame.pack(expand=1, fill='both')
 
         return frame
 
