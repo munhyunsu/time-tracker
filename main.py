@@ -6,7 +6,7 @@ FLAGS = _ = None
 
 
 class Application(tk.Frame):
-    ROWS = 3
+    ROWS = 4
     COLUMNS = 4
     
     def __init__(self, master=None):
@@ -15,10 +15,11 @@ class Application(tk.Frame):
         self.master.title('Time Tracker')
         self.master.grid_rowconfigure(0, weight=1)
         self.master.grid_columnconfigure(0, weight=1)
-        self.frame = self.create_frame(master)
+        self.component = {}
+        self.frame = self.create_frame(master, self.component)
         self.frame.pack(expand=1, fill='both')
 
-    def create_frame(self, master):
+    def create_frame(self, master, component):
         # master Frame
         frame = tk.Frame(master=master, relief=tk.RAISED, borderwidth=1)
         for i in range(self.ROWS):
@@ -40,18 +41,32 @@ class Application(tk.Frame):
         # textbox: Category
         text_category = tk.Entry(master=frame)
         text_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
+        component['text_category'] = text_category
         # label: Task
         label_task = tk.Label(master=frame, text='Task')
         label_task.grid(row=2, column=0, sticky=tk.NSEW)
         # textbox: Category
         text_task = tk.Entry(master=frame)
         text_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
+        component['text_task'] = text_task
         # button: Record
         button_record = tk.Button(master=frame, text='Record')
         button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW)
 
         return frame
 
+    def get_category(self):
+        value = self.component['text_category'].get()
+        if DEBUG:
+            print(f'{value}')
+
+    def text_task(self):
+        value = self.component['text_task'].get()
+        if DEBUG:
+            print(f'{value}')
+
+        
+    
 
 def up():
     print('up')
