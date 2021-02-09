@@ -29,8 +29,11 @@ class Application(tk.Frame):
         label_stime = tk.Label(master=frame, text='Start time')
         label_stime.grid(row=0, column=0, sticky=tk.NSEW)
         # label: Start time value
-        value_stime = tk.Label(master=frame, text='2020-01-01 00:00:00+0900')
-        value_stime.grid(row=0, column=1, columnspan=3, sticky=tk.NSEW)
+        value_stime = tk.Label(master=frame, text='2020-01-01\n00:00:00')
+        value_stime.grid(row=0, column=1, columnspan=2, sticky=tk.NSEW)
+        # button: Start time reset
+        button_stime = tk.Button(master=frame, text='Reset')
+        button_stime.grid(row=0, column=3, sticky=tk.NSEW)
         # label: Category
         label_category = tk.Label(master=frame, text='Category')
         label_category.grid(row=1, column=0, sticky=tk.NSEW)
