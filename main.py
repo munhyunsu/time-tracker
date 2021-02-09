@@ -46,6 +46,9 @@ class Application(tk.Frame):
         # textbox: Category
         text_task = tk.Entry(master=frame)
         text_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
+        # button: Record
+        button_record = tk.Button(master=frame, text='Record')
+        button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW)
 
         return frame
 
