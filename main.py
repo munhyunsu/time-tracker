@@ -1,5 +1,9 @@
 import os
 import tkinter as tk
+import time
+
+import numpy as np
+import pandas as pd
 
 DEBUG = False
 FLAGS = _ = None
@@ -9,8 +13,10 @@ class Application(tk.Frame):
     ROWS = 4
     COLUMNS = 4
     
-    def __init__(self, master=None):
+    def __init__(self, master=None, path):
         super().__init__(master)
+        self.path = path
+        self.data = self.get_data(self.path)
         self.master = master
         self.master.title('Time Tracker')
         self.master.grid_rowconfigure(0, weight=1)
@@ -65,15 +71,12 @@ class Application(tk.Frame):
         if DEBUG:
             print(f'{value}')
 
-        
-    
+    def get_data(path):
+        data = pd.read_pickle(path)
+        return data
 
-def up():
-    print('up')
-
-
-def down():
-    print('down')
+    def set_data(path, data)
+        data.to_pickle(path)
 
 
 def main():
@@ -83,7 +86,7 @@ def main():
 
     root = tk.Tk()
     root.geometry('256x256')
-    app = Application(master=root)
+    app = Application(master=root, FLAGS.data)
     app.mainloop()
 
 
@@ -97,8 +100,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--debug', action='store_true',
                         help='The present debug message')
+    parser.add_argument('--data', type=str, default='./data.pkl',
+                        help='The path for data')
 
     FLAGS, _ = parser.parse_known_args()
+    FLAGS.data = os.path.abspath(os.path.expanduser(FLAGS.data))
     DEBUG = FLAGS.debug
     
     main()
