@@ -13,14 +13,11 @@ class Application(tk.Frame):
     ROWS = 4
     COLUMNS = 4
     
-    def __init__(self, master=None, path):
+    def __init__(self, path, master=None):
         super().__init__(master)
         self.path = path
         self.data = self.get_data(self.path)
         self.master = master
-        self.master.title('Time Tracker')
-        self.master.grid_rowconfigure(0, weight=1)
-        self.master.grid_columnconfigure(0, weight=1)
         self.component = {}
         self.frame = self.create_frame(master, self.component)
         self.frame.pack(expand=1, fill='both')
@@ -71,11 +68,14 @@ class Application(tk.Frame):
         if DEBUG:
             print(f'{value}')
 
-    def get_data(path):
-        data = pd.read_pickle(path)
+    def get_data(self, path):
+        if os.path.exists(path):
+            data = pd.read_pickle(path)
+        else:
+            data = pd.DataFrame()
         return data
 
-    def set_data(path, data)
+    def set_data(self, path, data):
         data.to_pickle(path)
 
 
@@ -86,7 +86,10 @@ def main():
 
     root = tk.Tk()
     root.geometry('256x256')
-    app = Application(master=root, FLAGS.data)
+    root.title('Time Tracker')
+    root.grid_rowconfigure(0, weight=1)
+    root.grid_columnconfigure(0, weight=1)
+    app = Application(FLAGS.data, master=root)
     app.mainloop()
 
 
