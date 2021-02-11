@@ -14,15 +14,19 @@ class Application(tk.Frame):
     COLUMNS = 4
     
     def __init__(self, path, master=None):
+        # Init root
         super().__init__(master)
         self.path = path
-        self.data = self.get_data(self.path)
         self.master = master
-        self.component = {}
-        self.frame = self.create_frame(master, self.component)
+        # Init GUI handler
+        self.text_category = None
+        self.text_task = None
+        # create GUI
+        self.data = self.get_data(self.path)
+        self.frame = self.create_frame(self.master)
         self.frame.pack(expand=1, fill='both')
 
-    def create_frame(self, master, component):
+    def create_frame(self, master):
         # master Frame
         frame = tk.Frame(master=master, relief=tk.RAISED, borderwidth=1)
         for i in range(self.ROWS):
@@ -42,16 +46,14 @@ class Application(tk.Frame):
         label_category = tk.Label(master=frame, text='Category')
         label_category.grid(row=1, column=0, sticky=tk.NSEW)
         # textbox: Category
-        text_category = tk.Entry(master=frame)
-        text_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
-        component['text_category'] = text_category
+        self.text_category = tk.Entry(master=frame)
+        self.text_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
         # label: Task
         label_task = tk.Label(master=frame, text='Task')
         label_task.grid(row=2, column=0, sticky=tk.NSEW)
         # textbox: Category
-        text_task = tk.Entry(master=frame)
-        text_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
-        component['text_task'] = text_task
+        self.text_task = tk.Entry(master=frame)
+        self.text_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
         # button: Record
         button_record = tk.Button(master=frame, text='Record')
         button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW)
@@ -59,12 +61,12 @@ class Application(tk.Frame):
         return frame
 
     def get_category(self):
-        value = self.component['text_category'].get()
+        value = self.text_category.get()
         if DEBUG:
             print(f'{value}')
 
     def text_task(self):
-        value = self.component['text_task'].get()
+        value = self.text_task.get()
         if DEBUG:
             print(f'{value}')
 
@@ -89,7 +91,7 @@ def main():
     root.title('Time Tracker')
     root.grid_rowconfigure(0, weight=1)
     root.grid_columnconfigure(0, weight=1)
-    app = Application(FLAGS.data, master=root)
+    app = Application(path=FLAGS.data, master=root)
     app.mainloop()
 
 
