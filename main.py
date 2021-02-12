@@ -26,6 +26,7 @@ class Application(tk.Frame):
         # create GUI
         self.data = get_data(self.path)
         self.create_frame(self.master)
+        self.master.protocol('WM_DELETE_WINDOW', self.quit)
         # tic
         self.tic_tic()
 
@@ -43,7 +44,7 @@ class Application(tk.Frame):
         self.value_stime = tk.Label(master=frame, text='2020-01-01\n00:00:00')
         self.value_stime.grid(row=0, column=1, columnspan=2, sticky=tk.NSEW)
         # button: Start time reset
-        button_stime = tk.Button(master=frame, text='Reset')
+        button_stime = tk.Button(master=frame, text='Reset', command=self.event_reset)
         button_stime.grid(row=0, column=3, sticky=tk.NSEW)
         # label: Category
         label_category = tk.Label(master=frame, text='Category')
@@ -63,13 +64,11 @@ class Application(tk.Frame):
         # pack
         frame.pack(expand=1, fill='both')
 
-    def get_info(self):
-        now = time.time()
-        category = self.text_category.get()
-        task = self.text_task.get()
+    def quit(self):
         if DEBUG:
-            print(f'{now} {category} {task}')
-        return now, category, task
+            print(f'QUIT')
+        set_data(self.path, self.data)
+        self.master.destroy()
 
     def is_tasking(self):
         return len(self.data) != 0 and pd.isna(self.data.loc[self.data.index[-1]]['To'])
@@ -80,27 +79,40 @@ class Application(tk.Frame):
             print(f'{self.data}')
         if self.is_tasking():
             self.value_stime.config(text=self.data.loc[self.data.index[-1]]['From'])
+            self.text_category.delete(0, tk.END)
+            self.text_task.delete(0, tk.END)
+            self.text_category.insert(0, self.data.loc[self.data.index[-1]]['Category'])
+            self.text_task.insert(0, self.data.loc[self.data.index[-1]]['Task'])
             self.button_record.config(text='To', command=self.event_record_to)
         else:
             self.value_stime.config(text='Press From Button')
+            self.text_category.delete(0, tk.END)
+            self.text_task.delete(0, tk.END)
             self.button_record.config(text='From', command=self.event_record_from)
-        
 
     def event_record_from(self):
         now = time.time()
-        category = self.text_category.get()
-        task = self.text_task.get()
+        category = self.text_category.get().strip()
+        task = self.text_task.get().strip()
         if DEBUG:
-            print(f'FROM {now} {category} {task}')
-        self.data = self.data.append({'From': now, 'Category': category, 'Task': task}, 
-                                     ignore_index=True)
-        self.tic_tic()
+            print(f'\nFROM {now} {category} {task}')
+        if category != '' and task != '':
+            self.data = self.data.append({'From': now, 'Category': category, 'Task': task}, 
+                                         ignore_index=True)
+            self.tic_tic()
 
     def event_record_to(self):
         now = time.time()
         if DEBUG:
-            print(f'TO {now}')
+            print(f'\nTO {now}')
         self.data.loc[self.data.index[-1], 'To'] = now
+        self.tic_tic()
+
+    def event_reset(self):
+        if DEBUG:
+            print('\nRESET')
+        if self.is_tasking():
+            self.data = self.data.drop(self.data.index[-1])
         self.tic_tic()
 
 
@@ -110,6 +122,7 @@ def get_data(path):
     else:
         data = pd.DataFrame(columns=['From', 'To', 'Category', 'Task'])
     return data
+
 
 def set_data(path, data):
     data.to_pickle(path)
