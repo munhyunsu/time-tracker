@@ -1,4 +1,5 @@
 import os
+import datetime
 import tkinter as tk
 from tkinter import ttk
 import time
@@ -8,7 +9,8 @@ import pandas as pd
 
 DEBUG = False
 FLAGS = _ = None
-
+TZ_SEOUL = datetime.timezone(datetime.timedelta(hours=9))
+TZ_UTC = datetime.timezone(datetime.timedelta())
 
 class Application(tk.Frame):
     ROWS = 4
@@ -79,7 +81,7 @@ class Application(tk.Frame):
             print(f'is_tasking: {self.is_tasking()}')
             print(f'{self.data}')
         if self.is_tasking():
-            self.value_stime.config(text=self.data.loc[self.data.index[-1]]['From'])
+            self.value_stime.config(text=get_time(self.data.loc[self.data.index[-1]]['From']))
             self.combo_category.set(self.data.loc[self.data.index[-1]]['Category'])
             self.combo_task.set(self.data.loc[self.data.index[-1]]['Task'])
             self.button_record.config(text='To', command=self.event_record_to)
@@ -127,6 +129,11 @@ def get_data(path):
 
 def set_data(path, data):
     data.to_pickle(path)
+
+
+def get_time(timestamp, tz=TZ_SEOUL):
+    dt = datetime.datetime.fromtimestamp(timestamp, tz=tz)
+    return dt.strftime('%Y-%m-%d(%a)\n%H:%M:%S(%z)')
 
 
 def main():
