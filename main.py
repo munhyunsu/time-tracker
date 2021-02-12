@@ -21,10 +21,10 @@ class Application(tk.Frame):
         # Init GUI handler
         self.text_category = None
         self.text_task = None
+        self.button_record = None
         # create GUI
         self.data = self.get_data(self.path)
-        self.frame = self.create_frame(self.master)
-        self.frame.pack(expand=1, fill='both')
+        self.create_frame(self.master)
 
     def create_frame(self, master):
         # master Frame
@@ -55,30 +55,32 @@ class Application(tk.Frame):
         self.text_task = tk.Entry(master=frame)
         self.text_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
         # button: Record
-        button_record = tk.Button(master=frame, text='Record')
-        button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW)
+        self.button_record = tk.Button(master=frame, text='Record')
+        self.button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW)
+        # pack
+        frame.pack(expand=1, fill='both')
 
-        return frame
-
-    def get_category(self):
-        value = self.text_category.get()
+    def get_info(self):
+        now = time.time()
+        category = self.text_category.get()
+        task = self.text_task.get()
         if DEBUG:
-            print(f'{value}')
-
-    def text_task(self):
-        value = self.text_task.get()
-        if DEBUG:
-            print(f'{value}')
+            print(f'{now} {category} {task}')
+        return now, category, task
 
     def get_data(self, path):
         if os.path.exists(path):
             data = pd.read_pickle(path)
         else:
-            data = pd.DataFrame()
+            data = pd.DataFrame(columns=['From', 'To', 'Category', 'Task'])
         return data
 
     def set_data(self, path, data):
         data.to_pickle(path)
+    
+    def event_record(self):
+        pass
+        
 
 
 def main():
