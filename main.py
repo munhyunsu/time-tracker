@@ -1,5 +1,6 @@
 import os
 import tkinter as tk
+from tkinter import ttk
 import time
 
 import numpy as np
@@ -20,8 +21,8 @@ class Application(tk.Frame):
         self.master = master
         # Init GUI handler
         self.value_stime = None
-        self.text_category = None
-        self.text_task = None
+        self.combo_category = None
+        self.combo_task = None
         self.button_record = None
         # create GUI
         self.data = get_data(self.path)
@@ -49,15 +50,15 @@ class Application(tk.Frame):
         # label: Category
         label_category = tk.Label(master=frame, text='Category')
         label_category.grid(row=1, column=0, sticky=tk.NSEW)
-        # textbox: Category
-        self.text_category = tk.Entry(master=frame)
-        self.text_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
+        # combobox: Category
+        self.combo_category = ttk.Combobox(master=frame)
+        self.combo_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
         # label: Task
         label_task = tk.Label(master=frame, text='Task')
         label_task.grid(row=2, column=0, sticky=tk.NSEW)
-        # textbox: Category
-        self.text_task = tk.Entry(master=frame)
-        self.text_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
+        # combobox: Task
+        self.combo_task = ttk.Combobox(master=frame)
+        self.combo_task.grid(row=2, column=1, columnspan=3, sticky=tk.EW)
         # button: Record
         self.button_record = tk.Button(master=frame, text='Record')
         self.button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW)
@@ -79,21 +80,21 @@ class Application(tk.Frame):
             print(f'{self.data}')
         if self.is_tasking():
             self.value_stime.config(text=self.data.loc[self.data.index[-1]]['From'])
-            self.text_category.delete(0, tk.END)
-            self.text_task.delete(0, tk.END)
-            self.text_category.insert(0, self.data.loc[self.data.index[-1]]['Category'])
-            self.text_task.insert(0, self.data.loc[self.data.index[-1]]['Task'])
+            self.combo_category.set(self.data.loc[self.data.index[-1]]['Category'])
+            self.combo_task.set(self.data.loc[self.data.index[-1]]['Task'])
             self.button_record.config(text='To', command=self.event_record_to)
         else:
             self.value_stime.config(text='Press From Button')
-            self.text_category.delete(0, tk.END)
-            self.text_task.delete(0, tk.END)
+            self.combo_category.config(values=sorted(list(self.data['Category'].unique())))
+            self.combo_category.set('')
+            self.combo_task.config(values=sorted(list(self.data['Task'].unique())))
+            self.combo_task.set('')
             self.button_record.config(text='From', command=self.event_record_from)
 
     def event_record_from(self):
         now = time.time()
-        category = self.text_category.get().strip()
-        task = self.text_task.get().strip()
+        category = self.combo_category.get().strip()
+        task = self.combo_task.get().strip()
         if DEBUG:
             print(f'\nFROM {now} {category} {task}')
         if category != '' and task != '':
