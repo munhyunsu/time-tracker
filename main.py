@@ -19,12 +19,15 @@ class Application(tk.Frame):
         self.path = path
         self.master = master
         # Init GUI handler
+        self.value_stime = None
         self.text_category = None
         self.text_task = None
         self.button_record = None
         # create GUI
-        self.data = self.get_data(self.path)
+        self.data = get_data(self.path)
         self.create_frame(self.master)
+        # tic
+        self.tic_tic()
 
     def create_frame(self, master):
         # master Frame
@@ -37,8 +40,8 @@ class Application(tk.Frame):
         label_stime = tk.Label(master=frame, text='Start time')
         label_stime.grid(row=0, column=0, sticky=tk.NSEW)
         # label: Start time value
-        value_stime = tk.Label(master=frame, text='2020-01-01\n00:00:00')
-        value_stime.grid(row=0, column=1, columnspan=2, sticky=tk.NSEW)
+        self.value_stime = tk.Label(master=frame, text='2020-01-01\n00:00:00')
+        self.value_stime.grid(row=0, column=1, columnspan=2, sticky=tk.NSEW)
         # button: Start time reset
         button_stime = tk.Button(master=frame, text='Reset')
         button_stime.grid(row=0, column=3, sticky=tk.NSEW)
@@ -68,19 +71,48 @@ class Application(tk.Frame):
             print(f'{now} {category} {task}')
         return now, category, task
 
-    def get_data(self, path):
-        if os.path.exists(path):
-            data = pd.read_pickle(path)
-        else:
-            data = pd.DataFrame(columns=['From', 'To', 'Category', 'Task'])
-        return data
+    def is_tasking(self):
+        return len(self.data) != 0 and pd.isna(self.data.loc[self.data.index[-1]]['To'])
 
-    def set_data(self, path, data):
-        data.to_pickle(path)
-    
-    def event_record(self):
-        pass
+    def tic_tic(self):
+        if DEBUG:
+            print(f'is_tasking: {self.is_tasking()}')
+            print(f'{self.data}')
+        if self.is_tasking():
+            self.value_stime.config(text=self.data.loc[self.data.index[-1]]['From'])
+            self.button_record.config(text='To', command=self.event_record_to)
+        else:
+            self.value_stime.config(text='Press From Button')
+            self.button_record.config(text='From', command=self.event_record_from)
         
+
+    def event_record_from(self):
+        now = time.time()
+        category = self.text_category.get()
+        task = self.text_task.get()
+        if DEBUG:
+            print(f'FROM {now} {category} {task}')
+        self.data = self.data.append({'From': now, 'Category': category, 'Task': task}, 
+                                     ignore_index=True)
+        self.tic_tic()
+
+    def event_record_to(self):
+        now = time.time()
+        if DEBUG:
+            print(f'TO {now}')
+        self.data.loc[self.data.index[-1], 'To'] = now
+        self.tic_tic()
+
+
+def get_data(path):
+    if os.path.exists(path):
+        data = pd.read_pickle(path)
+    else:
+        data = pd.DataFrame(columns=['From', 'To', 'Category', 'Task'])
+    return data
+
+def set_data(path, data):
+    data.to_pickle(path)
 
 
 def main():
