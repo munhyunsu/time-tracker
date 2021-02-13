@@ -80,6 +80,8 @@ class Application(tk.Frame):
         if DEBUG:
             print(f'is_tasking: {self.is_tasking()}')
             print(f'{self.data}')
+        self.combo_category.config(values=sorted(list(self.data['Category'].unique())))
+        self.combo_task.config(values=sorted(list(self.data['Task'].unique())))
         if self.is_tasking():
             self.value_stime.config(text=get_time(self.data.loc[self.data.index[-1]]['From']))
             self.combo_category.set(self.data.loc[self.data.index[-1]]['Category'])
@@ -87,9 +89,7 @@ class Application(tk.Frame):
             self.button_record.config(text='To', command=self.event_record_to)
         else:
             self.value_stime.config(text='Press From Button')
-            self.combo_category.config(values=sorted(list(self.data['Category'].unique())))
             self.combo_category.set('')
-            self.combo_task.config(values=sorted(list(self.data['Task'].unique())))
             self.combo_task.set('')
             self.button_record.config(text='From', command=self.event_record_from)
 
@@ -99,17 +99,21 @@ class Application(tk.Frame):
         task = self.combo_task.get().strip()
         if DEBUG:
             print(f'\nFROM {now} {category} {task}')
-        if category != '' and task != '':
-            self.data = self.data.append({'From': now, 'Category': category, 'Task': task}, 
-                                         ignore_index=True)
-            self.tic_tic()
+        self.data = self.data.append({'From': now, 'Category': category, 'Task': task}, 
+                                     ignore_index=True)
+        self.tic_tic()
 
     def event_record_to(self):
         now = time.time()
+        category = self.combo_category.get().strip()
+        task = self.combo_task.get().strip()
         if DEBUG:
-            print(f'\nTO {now}')
-        self.data.loc[self.data.index[-1], 'To'] = now
-        self.tic_tic()
+            print(f'\nTO {now} {category} {task}')
+        if category != '' and task != '':
+            self.data.loc[self.data.index[-1], 'Category'] = category
+            self.data.loc[self.data.index[-1], 'Task'] = task
+            self.data.loc[self.data.index[-1], 'To'] = now
+            self.tic_tic()
 
     def event_reset(self):
         if DEBUG:
