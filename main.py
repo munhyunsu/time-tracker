@@ -79,7 +79,8 @@ class Application(tk.Frame):
     def tic_tic(self):
         if DEBUG:
             print(f'is_tasking: {self.is_tasking()}')
-            print(f'{self.data}')
+            if len(self.data) > 0:
+                print(f'{self.data.loc[self.data.index[-10:]]}')
         self.combo_category.config(values=sorted(list(self.data['Category'].unique())))
         self.combo_task.config(values=sorted(list(self.data['Task'].unique())))
         if self.is_tasking():
