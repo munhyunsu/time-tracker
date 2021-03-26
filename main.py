@@ -42,30 +42,31 @@ class Application(tk.Frame):
             frame.grid_columnconfigure(i, weight=1)
         # label: Start time
         label_stime = tk.Label(master=frame, text='Start time')
-        label_stime.grid(row=0, column=0, sticky=tk.NSEW)
+        label_stime.grid(row=0, column=0, padx=10, pady=10, sticky=tk.NSEW)
         # label: Start time value
         self.value_stime = tk.Label(master=frame, text='2020-01-01\n00:00:00')
-        self.value_stime.grid(row=0, column=1, columnspan=2, sticky=tk.NSEW)
+        self.value_stime.grid(row=0, column=1, padx=10, pady=10, columnspan=2, sticky=tk.NSEW)
         # button: Start time reset
         button_stime = tk.Button(master=frame, text='Reset', command=self.event_reset)
-        button_stime.grid(row=0, column=3, sticky=tk.NSEW)
+        button_stime.grid(row=0, column=3, padx=10, pady=10, sticky=tk.NSEW)
         # label: Category
         label_category = tk.Label(master=frame, text='Category')
         label_category.grid(row=1, column=0, sticky=tk.NSEW)
         # combobox: Category
         self.combo_category = ttk.Combobox(master=frame)
-        self.combo_category.grid(row=1, column=1, columnspan=3, sticky=tk.EW)
+        self.combo_category.grid(row=1, column=1, columnspan=3, padx=10, pady=10, sticky=tk.EW)
         # label: Task
         label_task = tk.Label(master=frame, text='Task')
-        label_task.grid(row=2, column=0, sticky=tk.NSEW)
+        label_task.grid(row=2, column=0, sticky=tk.NSEW, padx=10, pady=10)
         # textbox: Task
         self.text_task = tk.Text(master=frame, width=1, height=1)
-        self.text_task.grid(row=2, column=1, columnspan=3, sticky=tk.NSEW)
+        self.text_task.grid(row=2, column=1, columnspan=3, sticky=tk.NSEW, padx=10, pady=10)
         # button: Record
         self.button_record = tk.Button(master=frame, text='Record')
-        self.button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW)
+        self.button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW, padx=10, pady=10)
+        
         # pack
-        frame.pack(expand=1, fill='both')
+        frame.pack(expand=2, fill='both',  side=tk.LEFT)
 
     def quit(self):
         if DEBUG:
