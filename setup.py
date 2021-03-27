@@ -2,6 +2,7 @@ import os
 import sys
 import time
 
+
 def main():
     print('\x1B[1m\x1B[33mTime Tracker Installer\x1B[0m')
     
@@ -20,7 +21,7 @@ def main():
     print(f'\x1B[32mpandas version: {pd.__version__}\x1B[0m')
     print(f'\x1B[32mtkinter version: {tk.TkVersion}\x1B[0m')
     print('\x1B[47m\x1B[32mCheck the dependency done\x1B[0m')
-    
+
     print('\x1B[47m\x1B[32mCheck Python3 interpreter path\x1B[0m')
     python3_path = sys.executable
     root_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,7 +29,7 @@ def main():
     print(f'\x1B[32mPython3 path: {python3_path}\x1B[0m')
     print(f'\x1B[32mmain.py path: {main_path}\x1B[0m')
     print('\x1B[47m\x1B[32mCheck Python3 interpreter path done\x1B[0m')
-    
+
     print('\x1B[32mCreate timetracker.desktop\x1B[0m')
     desktop = (f'[Desktop Entry]\n'
                f'Name=Time Tracker\n'
@@ -48,3 +49,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
