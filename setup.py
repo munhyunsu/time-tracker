@@ -30,8 +30,11 @@ def main():
     print(f'\x1B[32mmain.py path: {main_path}\x1B[0m')
     print('\x1B[47m\x1B[32mCheck Python3 interpreter path done\x1B[0m')
 
+    print('\x1B[47m\x1B[32Download Nanum Gothic font on Google fonts\x1B[0m')
+    ## Need to download URL: https://fonts.google.com/download?family=Nanum%20Gothic
+
     if sys.platform == 'linux':
-        print('\x1B[32mCreate timetracker.desktop\x1B[0m')
+        print('\x1B[47m\x1B[32mCreate timetracker.desktop\x1B[0m')
         desktop = (f'[Desktop Entry]\n'
                    f'Name=Time Tracker\n'
                    f'Comment=Time Tracker\n'
