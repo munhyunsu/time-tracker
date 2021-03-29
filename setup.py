@@ -48,7 +48,7 @@ def main():
             f.write(desktop)
         print(f'\x1B[47m\x1B[32mln -s {desktop_path} ~/.local/share/applications/\x1B[0m')
         print(f'\x1B[47m\x1B[32mOr move timetracker.desktop to ~/.local/share/applications/\x1B[0m')
-    elif sys.platform == 'cygwin':
+    elif sys.platform == 'win32':
         print('\x1B[32mNeed to execution bash on Windows\x1B[0m')
 
 
