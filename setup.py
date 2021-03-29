@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import urllib.request
 
 
 def main():
@@ -31,7 +32,9 @@ def main():
     print('\x1B[47m\x1B[32mCheck Python3 interpreter path done\x1B[0m')
 
     print('\x1B[47m\x1B[32Download Nanum Gothic font on Google fonts\x1B[0m')
-    ## Need to download URL: https://fonts.google.com/download?family=Nanum%20Gothic
+    with urllib.request.urlopen('https://fonts.google.com/download?family=Nanum%20Gothic') as uf:
+        with open('Google-Nanum-Gothic.zip', 'wb') as wf:
+            wf.write(uf.read())
 
     if sys.platform == 'linux':
         print('\x1B[47m\x1B[32mCreate timetracker.desktop\x1B[0m')
