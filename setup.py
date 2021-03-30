@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import urllib.request
+import zipfile
 
 
 def main():
@@ -31,10 +32,15 @@ def main():
     print(f'\x1B[32mmain.py path: {main_path}\x1B[0m')
     print('\x1B[47m\x1B[32mCheck Python3 interpreter path done\x1B[0m')
 
-    print('\x1B[47m\x1B[32Download Nanum Gothic font on Google fonts\x1B[0m')
+    print('\x1B[47m\x1B[32mDownload Nanum Gothic font on Google fonts\x1B[0m')
     with urllib.request.urlopen('https://fonts.google.com/download?family=Nanum%20Gothic') as uf:
         with open('Google-Nanum-Gothic.zip', 'wb') as wf:
             wf.write(uf.read())
+    with zipfile.ZipFile('Google-Nanum-Gothic.zip') as myzip:
+        with myzip.open('NanumGothic-Regular.ttf') as fontfile:
+            with open('font.ttf', 'wb') as f:
+                f.write(fontfile.read())
+    os.remove('Google-Nanum-Gothic.zip')
 
     if sys.platform == 'linux':
         print('\x1B[47m\x1B[32mCreate timetracker.desktop\x1B[0m')
