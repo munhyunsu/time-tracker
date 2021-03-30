@@ -1,6 +1,7 @@
 # Created files via apps
 *.pkl
 *.desktop
+*.ttf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
