@@ -1,7 +1,8 @@
 # Created files via apps
 *.pkl
 *.desktop
-*.ttf
+fonts/ # Font directory
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
