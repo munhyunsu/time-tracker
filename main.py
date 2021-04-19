@@ -2,6 +2,7 @@ import os
 import datetime
 import tkinter as tk
 from tkinter import ttk
+from tkinter import font
 import time
 
 import numpy as np
@@ -11,6 +12,8 @@ DEBUG = False
 FLAGS = _ = None
 TZ_SEOUL = datetime.timezone(datetime.timedelta(hours=9))
 TZ_UTC = datetime.timezone(datetime.timedelta())
+FONT='NanumGothic'
+
 
 class Application(tk.Frame):
     ROWS = 4
@@ -21,6 +24,8 @@ class Application(tk.Frame):
         super().__init__(master)
         self.path = path
         self.master = master
+        # Font object
+        self.fonts = self._init_fonts()
         # Init GUI handler
         self.value_stime = None
         self.combo_category = None
@@ -33,6 +38,11 @@ class Application(tk.Frame):
         # tic
         self.tic_tic()
 
+    def _init_fonts(self):
+        fonts = {'content': font.Font(family=FONT, size=10),
+                }
+        return fonts
+
     def create_frame(self, master):
         # master Frame
         frame = tk.Frame(master=master, relief=tk.RAISED, borderwidth=1)
@@ -41,32 +51,37 @@ class Application(tk.Frame):
         for i in range(self.COLUMNS):
             frame.grid_columnconfigure(i, weight=1)
         # label: Start time
-        label_stime = tk.Label(master=frame, text='Start time')
+        label_stime = tk.Label(master=frame, font=self.fonts['content'],
+                               text='Start time')
         label_stime.grid(row=0, column=0, padx=10, pady=10, sticky=tk.NSEW)
         # label: Start time value
-        self.value_stime = tk.Label(master=frame, text='2020-01-01\n00:00:00')
+        self.value_stime = tk.Label(master=frame, font=self.fonts['content'],
+                                    text='2020-01-01\n00:00:00')
         self.value_stime.grid(row=0, column=1, padx=10, pady=10, columnspan=2, sticky=tk.NSEW)
         # button: Start time reset
-        button_stime = tk.Button(master=frame, text='Reset', command=self.event_reset)
+        button_stime = tk.Button(master=frame, font=self.fonts['content'],
+                                 text='Reset', command=self.event_reset)
         button_stime.grid(row=0, column=3, padx=10, pady=10, sticky=tk.NSEW)
         # label: Category
-        label_category = tk.Label(master=frame, text='Category')
+        label_category = tk.Label(master=frame, font=self.fonts['content'],
+                                  text='Category')
         label_category.grid(row=1, column=0, sticky=tk.NSEW)
         # combobox: Category
-        self.combo_category = ttk.Combobox(master=frame)
+        self.combo_category = ttk.Combobox(master=frame, font=self.fonts['content'])
         self.combo_category.grid(row=1, column=1, columnspan=3, padx=10, pady=10, sticky=tk.EW)
         # label: Task
-        label_task = tk.Label(master=frame, text='Task')
+        label_task = tk.Label(master=frame, font=self.fonts['content'],
+                              text='Task')
         label_task.grid(row=2, column=0, sticky=tk.NSEW, padx=10, pady=10)
         # textbox: Task
         self.text_task = tk.Text(master=frame, width=1, height=1)
         self.text_task.grid(row=2, column=1, columnspan=3, sticky=tk.NSEW, padx=10, pady=10)
         # button: Record
-        self.button_record = tk.Button(master=frame, text='Record')
+        self.button_record = tk.Button(master=frame, font=self.fonts['content'],
+                                      text='Record')
         self.button_record.grid(row=3, column=0, columnspan=4, sticky=tk.NSEW, padx=10, pady=10)
-        
         # pack
-        frame.pack(expand=2, fill='both',  side=tk.LEFT)
+        frame.pack(expand=2, fill='both',side=tk.LEFT)
 
     def quit(self):
         if DEBUG:
@@ -84,17 +99,21 @@ class Application(tk.Frame):
                 print(f'{self.data.loc[self.data.index[-10:]]}')
         self.combo_category.config(values=sorted(list(self.data['Category'].unique())))
         if self.is_tasking():
-            self.value_stime.config(text=get_time(self.data.loc[self.data.index[-1]]['From']))
+            self.value_stime.config(font=self.fonts['content'],
+                                    text=get_time(self.data.loc[self.data.index[-1]]['From']))
             self.combo_category.set(self.data.loc[self.data.index[-1]]['Category'])
             self.text_task.delete('1.0', 'end')
             self.text_task.insert('1.0', self.data.loc[self.data.index[-1]]['Task'])
-            self.button_record.config(text='To', command=self.event_record_to)
+            self.button_record.config(font=self.fonts['content'],
+                                      text='To', command=self.event_record_to)
         else:
-            self.value_stime.config(text='Press From Button')
+            self.value_stime.config(font=self.fonts['content'],
+                                    text='Press From Button')
             self.combo_category.set('')
             self.text_task.delete('1.0', 'end')
             self.text_task.insert('1.0', '')
-            self.button_record.config(text='From', command=self.event_record_from)
+            self.button_record.config(font=self.fonts['content'],
+                                      text='From', command=self.event_record_from)
 
     def event_record_from(self):
         now = time.time()
@@ -149,7 +168,7 @@ def main():
         print(f'Unparsed arguments {_}')
 
     root = tk.Tk()
-    root.geometry('256x256')
+    root.geometry('384x256')
     root.title('Time Tracker')
     root.grid_rowconfigure(0, weight=1)
     root.grid_columnconfigure(0, weight=1)

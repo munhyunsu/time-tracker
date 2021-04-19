@@ -37,9 +37,7 @@ def main():
         with open('Google-Nanum-Gothic.zip', 'wb') as wf:
             wf.write(uf.read())
     with zipfile.ZipFile('Google-Nanum-Gothic.zip') as myzip:
-        with myzip.open('NanumGothic-Regular.ttf') as fontfile:
-            with open('font.ttf', 'wb') as f:
-                f.write(fontfile.read())
+        myzip.extractall('fonts')
     os.remove('Google-Nanum-Gothic.zip')
 
     if sys.platform == 'linux':
@@ -55,6 +53,8 @@ def main():
         desktop_path = os.path.join(root_dir, 'timetracker.desktop')
         with open(desktop_path, 'w') as f:
             f.write(desktop)
+        print('\x1B[47m\x1B[32mMove all files of fonts to ~/.fonts\x1B[0m', end=' ')
+        print(f'\x1B[32mand Remove fonts directory\x1B[0m')
         print(f'\x1B[47m\x1B[32mln -s {desktop_path} ~/.local/share/applications/\x1B[0m')
         print(f'\x1B[47m\x1B[32mOr move timetracker.desktop to ~/.local/share/applications/\x1B[0m')
     elif sys.platform == 'win32':
